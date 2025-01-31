@@ -31,7 +31,7 @@ The server will start on the port 8000.
 ## API Endpoints
 
 ### Add a Book
-- **URL:** `/api/v1/books`
+- **URL:** `/api/v1/books/`
 - **Method:** `POST`
 - **Body:**
     ```json
@@ -63,7 +63,7 @@ The server will start on the port 8000.
     ```
 
 ### Get a Book by ID
-- **URL:** `/api/v1/books/:bookId`
+- **URL:** `/api/v1/books/:bookId/`
 - **Method:** `GET`
 - **Response:**
     ```json
@@ -85,7 +85,7 @@ The server will start on the port 8000.
     ```
 
 ### Get All Books
-- **URL:** `/api/v1/books`
+- **URL:** `/api/v1/books/`
 - **Method:** `GET`
 - **Response:**
     ```json
@@ -124,7 +124,7 @@ The server will start on the port 8000.
     ```
 
 ### Update a Book
-- **URL:** `/api/v1/books/:bookId`
+- **URL:** `/api/v1/books/:bookId/`
 - **Method:** `PUT`
 - **Body:**
     ```json
