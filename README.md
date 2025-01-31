@@ -1,223 +1,87 @@
 # Library Management API
 
-## Introduction
-This Library Management API is a RESTful API for managing a library's book collection. It allows users to add, update, delete, and retrieve books.
+## Overview
+This is a Django-based Library Management API that allows users to manage books, including adding, updating, retrieving, and deleting book records. It also includes rate limiting to control excessive requests.
 
-## Setup
+## Features
+- CRUD operations for books (Create, Read, Update, Delete)
+- Rate limiting to prevent abuse
+- API documentation using Postman
+- Deployment on Vercel
+
+## Installation
+### Prerequisites
+Ensure you have the following installed:
+- Python 3
+- Django
+- Git
+
+### Steps to Set Up Locally
 1. Clone the repository:
-    ```bash
-    git clone https://github.com/F0laf0lu/library-api
-    cd library-api
-    ```
+   ```bash
+   git clone https://github.com/yourusername/your-repo.git
+   cd your-repo
+   ```
+2. Create and activate a virtual environment:
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate  # On Windows use: venv\Scripts\activate
+   ```
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Run migrations:
+   ```bash
+   python manage.py migrate
+   ```
+5. Start the development server:
+   ```bash
+   python manage.py runserver
+   ```
 
-2. Install dependencies:
-    ```bash
-    pip install requirements.txt
-    ```
-
-3. Set up environment variables:
-    Create a `.env` file in the root directory and add the following variables:
-    ```env
-    SECRET_KEY=your_secret_key
-    ```
-    
-## Running the Application
-To start the application, run:
-```bash
-python manage.py runserver
-```
-The server will start on the port 8000.
+## Deployment on PythonAnywhere
+1. Clone your repository on PythonAnywhere.
+2. Set up a virtual environment and install dependencies.
+3. Run database migrations.
+4. Collect static files and configure the web app.
+5. Reload the web app from PythonAnywhere’s dashboard.
 
 ## API Endpoints
-
-### Add a Book
-- **URL:** `/api/v1/books/`
-- **Method:** `POST`
-- **Body:**
-    ```json
-    {
-        "title": "Book Title",
-        "author": "Author Name",
-        "genre": "Genre",
-        "publication_date": "YYYY-MM-DD",
-        "edition": "Edition",
-        "summary": "Book Summary"
-    }
-    ```
-- **Response:**
-    ```json
-    {
-        "status": "success",
-        "code": 201,
-        "message": "Book added successfully",
-        "data": {
-            "id": "BOOK-id",
-            "title": "Book Title",
-            "author": "Author Name",
-            "genre": "Genre",
-            "publication_date": "YYYY-MM-DD",
-            "edition": "Edition",
-            "summary": "Book Summary",
-        }
-    }
-    ```
-
-### Get a Book by ID
-- **URL:** `/api/v1/books/:bookId/`
-- **Method:** `GET`
-- **Response:**
-    ```json
-    {
-        "status": "success",
-        "code": 200,
-        "message": "Book details retrieved successfully.",
-        "data": {
-            "id": "BOOK-id",
-            "title": "Book Title",
-            "author": "Author Name",
-            "genre": "Genre",
-            "publication_date": "YYYY-MM-DD",
-            "edition": "Edition",
-            "summary": "Book Summary",
-            "available": "available",
-        }
-    }
-    ```
-
 ### Get All Books
-- **URL:** `/api/v1/books/`
-- **Method:** `GET`
-- **Response:**
-    ```json
-    {
-        "status": "success",
-        "code": 200,
-        "message": "Books retrieved successfully.",
-        "count": 4,
-        "data": [
-            {
-                "id": "BOOK-uuid1",
-                "title": "Book Title 1",
-                "author": "Author Name 1",
-                "genre": "Genre 1",
-                "publication_date": "YYYY-MM-DD",
-                "edition": "Edition 1",
-                "summary": "Book Summary 1",
-                "available": "available",
-            },
-            {
-                "id": "BOOK-id",
-                "title": "Book Title 2",
-                "author": "Author Name 2",
-                "genre": "Genre 2",
-                "publication_date": "YYYY-MM-DD",
-                "edition": "Edition 2",
-                "summary": "Book Summary 2",
-                "available": "not available",
-            }
-        ],
-        "pagination": {
-            "current_Page": 2,
-            "per_page": 10,
-        }
-    }
-    ```
-
-### Update a Book
-- **URL:** `/api/v1/books/:bookId/`
-- **Method:** `PUT`
-- **Body:**
-    ```json
-    {
-        "title": "Updated Book Title",
-        "author": "Updated Author Name",
-        "genre": "Updated Genre",
-        "publication_date": "YYYY-MM-DD",
-        "edition": "Updated Edition",
-        "summary": "Updated Book Summary",
-        "available": "available",
-
-    }
-    ```
-- **Response:**
-    ```json
-    {
-        "status": "success",
-        "code": 200,
-        "message": "Book updated successfully",
-        "data": {
-            "id": "BOOK-id",
-            "title": "Updated Book Title",
-            "author": "Updated Author Name",
-            "genre": "Updated Genre",
+- **Method**: `GET`
+- **URL**: `/api/v1/books/`
+- **Response**:
+  ```json
+  {
+    "books": [
+        {
+            "id": "uuid",
+            "title": "Book Title",
+            "author": "Author Name",
+            "genre": "Genre",
             "publication_date": "YYYY-MM-DD",
-            "edition": "Updated Edition",
-            "summary": "Updated Book Summary",
-            "available": "available"
+            "availability": "available",
+            "edition": "Edition",
+            "summary": "Summary of the book"
         }
-    }
-    ```
+    ]
+  }
+  ```
 
-### Delete a Book
-- **URL:** `/api/v1/books/:bookId`
-- **Method:** `DELETE`
-- **Response:**
-    ```json
-    {
-        "status": "success",
-        "code": 200,
-        "message": "Book deleted successfully"
-    }
-    ```
+### Rate Limiting
+- Headers:
+  ```json
+  {
+    "X-RateLimit-Limit": "",
+    "X-RateLimit-Remaining": "4",
+    "X-RateLimit-Reset": "timestamp"
+  }
+  ```
+- **Exceeded Rate Limit Response**:
+  ```json
+  {
+    "detail": "Request was throttled. Expected available in 50 seconds."
+  }
+  ```
 
-## Rate Limiting
-The API has rate limiting enabled user django throttling to prevent abuse. The rate limiter is configured to allow a certain number of requests per minute. If the limit is exceeded, the API will respond with a `429 Too Many Requests` status. Current rate is set to 10requests per second for anon users
-
-
-## Pagination
-The API supports pagination for endpoints that return multiple items. This helps to manage large sets of data by dividing them into pages.
-
-### Pagination Parameters
-- **page:** The page number to retrieve (default is 1).
-- **page_size:** The number of items per page (default is 10).
-
-### Example Request
-To retrieve the second page with 5 items per page:
-```http
-GET /api/v1/books?page=2&page_size=10
-```
-
-### Example Response
-```json
-{
-    "status": "success",
-    "code": 200,
-    "message": "Books retrieved successfully.",
-    "data": [
-        {
-            "id": 1,
-            "title": "Book Title 6",
-            "author": "Author Name 6",
-            "genre": "Genre 6",
-            "publicationDate": "YYYY-MM-DD",
-            "edition": "Edition 6",
-            "summary": "Book Summary 6",
-            "available": "available",
-        },
-        {
-            "id": 2,
-            "title": "Book Title 7",
-            "author": "Author Name 7",
-            "genre": "Genre 7",
-            "publicationDate": "YYYY-MM-DD",
-            "edition": "Edition 7",
-            "summary": "Book Summary 7",
-            "available": "not available",
-        }
-    ],
-    "pagination": {
-        "current_Page": 2,
-        "per_page": 10,
-    },
-}
-```
