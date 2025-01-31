@@ -39,7 +39,7 @@ The server will start on the port 8000.
         "title": "Book Title",
         "author": "Author Name",
         "genre": "Genre",
-        "publicationDate": "YYYY-MM-DD",
+        "publication_date": "YYYY-MM-DD",
         "edition": "Edition",
         "summary": "Book Summary"
     }
@@ -51,14 +51,13 @@ The server will start on the port 8000.
         "code": 201,
         "message": "Book added successfully",
         "data": {
-            "id": "BOOK-uuid",
+            "id": "BOOK-id",
             "title": "Book Title",
             "author": "Author Name",
             "genre": "Genre",
-            "publicationDate": "YYYY-MM-DD",
+            "publication_date": "YYYY-MM-DD",
             "edition": "Edition",
             "summary": "Book Summary",
-            "__v": 0
         }
     }
     ```
@@ -73,22 +72,14 @@ The server will start on the port 8000.
         "code": 200,
         "message": "Book details retrieved successfully.",
         "data": {
-            "id": "BOOK-uuid",
+            "id": "BOOK-id",
             "title": "Book Title",
             "author": "Author Name",
             "genre": "Genre",
-            "publicationDate": "YYYY-MM-DD",
+            "publication_date": "YYYY-MM-DD",
             "edition": "Edition",
             "summary": "Book Summary",
             "available": "available",
-            "createdAt": "YYYY-MM-DD",
-            "updatedAt": "YYYY-MM-DD",
-            "__v": 0
-        },
-         "headers": {
-            "limit": "100",
-            "remaining": "80",
-            "reset": "96"
         }
     }
     ```
@@ -109,37 +100,25 @@ The server will start on the port 8000.
                 "title": "Book Title 1",
                 "author": "Author Name 1",
                 "genre": "Genre 1",
-                "publicationDate": "YYYY-MM-DD",
+                "publication_date": "YYYY-MM-DD",
                 "edition": "Edition 1",
                 "summary": "Book Summary 1",
                 "available": "available",
-                "createdAt": "YYYY-MM-DD",
-                "updatedAt": "YYYY-MM-DD",
-                "__v": 0
             },
             {
-                "id": "BOOK-uuid2",
+                "id": "BOOK-id",
                 "title": "Book Title 2",
                 "author": "Author Name 2",
                 "genre": "Genre 2",
-                "publicationDate": "YYYY-MM-DD",
+                "publication_date": "YYYY-MM-DD",
                 "edition": "Edition 2",
                 "summary": "Book Summary 2",
                 "available": "not available",
-                "createdAt": "YYYY-MM-DD",
-                "updatedAt": "YYYY-MM-DD",
-                "__v": 0
             }
         ],
         "pagination": {
-            "pageNumber": 1,
-            "pageSize": 5,
-            "skip": 0
-        },
-        "headers": {
-            "limit": "100",
-            "remaining": "80",
-            "reset": "96"
+            "current_Page": 2,
+            "per_page": 10,
         }
     }
     ```
@@ -153,7 +132,7 @@ The server will start on the port 8000.
         "title": "Updated Book Title",
         "author": "Updated Author Name",
         "genre": "Updated Genre",
-        "publicationDate": "YYYY-MM-DD",
+        "publication_date": "YYYY-MM-DD",
         "edition": "Updated Edition",
         "summary": "Updated Book Summary",
         "available": "available",
@@ -167,17 +146,14 @@ The server will start on the port 8000.
         "code": 200,
         "message": "Book updated successfully",
         "data": {
-            "id": "BOOK-uuid",
+            "id": "BOOK-id",
             "title": "Updated Book Title",
             "author": "Updated Author Name",
             "genre": "Updated Genre",
-            "publicationDate": "YYYY-MM-DD",
+            "publication_date": "YYYY-MM-DD",
             "edition": "Updated Edition",
             "summary": "Updated Book Summary",
-            "available": "available",
-            "createdAt": "YYYY-MM-DD",
-            "updatedAt": "YYYY-MM-DD",
-            "__v": 0
+            "available": "available"
         }
     }
     ```
@@ -195,24 +171,20 @@ The server will start on the port 8000.
     ```
 
 ## Rate Limiting
-The API has rate limiting enabled to prevent abuse. The rate limiter is configured to allow a certain number of requests per minute. If the limit is exceeded, the API will respond with a `429 Too Many Requests` status.
+The API has rate limiting enabled user django throttling to prevent abuse. The rate limiter is configured to allow a certain number of requests per minute. If the limit is exceeded, the API will respond with a `429 Too Many Requests` status. Current rate is set to 10requests per second for anon users
 
-### Rate Limiting Headers
-- **X-RateLimit-Limit:** The maximum number of requests that the client is allowed to make in a given period.
-- **X-RateLimit-Remaining:** The number of requests remaining in the current rate limit window.
-- **X-RateLimit-Reset:** The time at which the current rate limit window resets.
 
 ## Pagination
 The API supports pagination for endpoints that return multiple items. This helps to manage large sets of data by dividing them into pages.
 
 ### Pagination Parameters
 - **page:** The page number to retrieve (default is 1).
-- **limit:** The number of items per page (default is 10).
+- **page_size:** The number of items per page (default is 10).
 
 ### Example Request
 To retrieve the second page with 5 items per page:
 ```http
-GET /api/v1/books?page=2&limit=5
+GET /api/v1/books?page=2&page_size=10
 ```
 
 ### Example Response
@@ -221,10 +193,9 @@ GET /api/v1/books?page=2&limit=5
     "status": "success",
     "code": 200,
     "message": "Books retrieved successfully.",
-    "count": 5,
     "data": [
         {
-            "id": "BOOK-uuid6",
+            "id": 1,
             "title": "Book Title 6",
             "author": "Author Name 6",
             "genre": "Genre 6",
@@ -232,12 +203,9 @@ GET /api/v1/books?page=2&limit=5
             "edition": "Edition 6",
             "summary": "Book Summary 6",
             "available": "available",
-            "createdAt": "YYYY-MM-DD",
-            "updatedAt": "YYYY-MM-DD",
-            "__v": 0
         },
         {
-            "id": "BOOK-uuid7",
+            "id": 2,
             "title": "Book Title 7",
             "author": "Author Name 7",
             "genre": "Genre 7",
@@ -245,61 +213,11 @@ GET /api/v1/books?page=2&limit=5
             "edition": "Edition 7",
             "summary": "Book Summary 7",
             "available": "not available",
-            "createdAt": "YYYY-MM-DD",
-            "updatedAt": "YYYY-MM-DD",
-            "__v": 0
         }
     ],
     "pagination": {
-        "pageNumber": 2,
-        "pageSize": 5,
-        "skip": 5
+        "current_Page": 2,
+        "per_page": 10,
     },
-    "headers": {
-        "limit": "100",
-        "remaining": "80",
-        "reset": "96"
-    }
 }
 ```
-
-## Testing
-To run the tests, use the following command:
-```bash
-npm test
-```
-The tests are written using Mocha, Chai, and Sinon for unit testing and Supertest for API testing.
-
-## Deployment
-The application can be deployed on various platforms such as Render, Heroku, AWS, or any other cloud service provider. Below are the general steps to deploy on Render:
-
-1. Create a new account or log in to your existing account on [Render](https://render.com/).
-
-2. Create a new Web Service:
-    - Click on the "New" button and select "Web Service".
-    - Connect your GitHub repository and select the repository containing your application.
-
-3. Configure the service:
-    - Set the build command to `npm install`.
-    - Set the start command to `npm start`.
-    - Add the environment variables:
-        ```env
-        MONGODB_URI=your_mongodb_connection_string
-        PORT=3000
-        ```
-
-4. Deploy the service:
-    - Click on the "Create Web Service" button to deploy your application.
-
-5. Access your application:
-    - Once the deployment is complete, you can access your application using the URL provided by Render.
-
-## License
-This project is licensed under the MIT License. See the LICENSE file for details.
-
-## Contact
-For inquiries or support, please contact:
-- **Name:** Maxim LD
-- **Email:** [maxld.testdev@gmail.com](mailto:maxld.testdev@gmail.com)
-- **GitHub:** [https://github.com/maxim-ld](https://github.com/maxim-ld)
-- **LinkedIn:** [https://www.linkedin.com/in/arowosere-ak](https://www.linkedin.com/in/arowosere-ak)

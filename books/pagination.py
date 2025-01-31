@@ -13,10 +13,14 @@ class CustomPagination(PageNumberPagination):
                 "status": "success",
                 "status": 200,
                 "message": "Books retrieved successfully",
-                "current_Page": self.page.number,
-                "per_page": self.page_size,
-                "total_pages": self.page.paginator.num_pages,
-                "total_books": self.page.paginator.count,
                 "data": data,
+                "pagination": {
+                    "current_Page": self.page.number,
+                    "per_page": self.page_size,
+                    "links": {
+                        "next": self.get_next_link(),
+                        "previous": self.get_previous_link(),
+                    },
+                },
             }
         )
