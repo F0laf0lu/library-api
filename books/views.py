@@ -3,6 +3,7 @@ from django_ratelimit.decorators import ratelimit
 from .models import Book
 from .serializers import BookSerializer
 from django.http import HttpResponse
+from rest_framework.throttling import AnonRateThrottle
 
 
 def home(request):
@@ -10,8 +11,10 @@ def home(request):
 
 
 class BookListView(generics.ListCreateAPIView):
-    queryset = Book.objects.all()
+    queryset = Book.objects.all().order_by("id")
     serializer_class = BookSerializer
+
+
 
 class BookDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Book.objects.all()

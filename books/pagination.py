@@ -11,6 +11,7 @@ class CustomPagination(PageNumberPagination):
         return Response(
             {
                 "status": "success",
+                "status": 200,
                 "message": "Books retrieved successfully",
                 "current_Page": self.page.number,
                 "per_page": self.page_size,

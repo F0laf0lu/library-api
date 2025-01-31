@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "books",
-    "django_ratelimit",
+    # "django_ratelimit",
 ]
 
 MIDDLEWARE = [
@@ -133,21 +133,30 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-CACHES = {
-    "default": {
-        "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis-11817.c321.us-east-1-2.ec2.redns.redis-cloud.com:11817",
-        "OPTIONS": {
-            "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            "PASSWORD": "OWM5ADy6aHvdTjCvdjo2l0ck46OUunOf",
-        },
-    }
-}
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis-11817.c321.us-east-1-2.ec2.redns.redis-cloud.com:11817",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#             "PASSWORD": "OWM5ADy6aHvdTjCvdjo2l0ck46OUunOf",
+#         },
+#     }
+# }
 
 
 REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "books.pagination.CustomPagination",
     "PAGE_SIZE": 100,
+    "DEFAULT_THROTTLE_CLASSES": [
+        "rest_framework.throttling.AnonRateThrottle",  # Limit for unauthenticated users
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "10/minute",  # Unauthenticated users: 10 requests per minute
+        "user": "1000/day",  # Authenticated users: 1000 requests per day
+    },
 }
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
+
+APPEND_SLASH = False
