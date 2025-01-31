@@ -149,11 +149,12 @@ REST_FRAMEWORK = {
     "DEFAULT_PAGINATION_CLASS": "books.pagination.CustomPagination",
     "PAGE_SIZE": 100,
     "DEFAULT_THROTTLE_CLASSES": [
-        "rest_framework.throttling.AnonRateThrottle",  # Limit for unauthenticated users
+        "books.throttles.BookAnonRateThrottle",
+        "books.throttles.BookUserRateThrottle",  #
     ],
     "DEFAULT_THROTTLE_RATES": {
-        "anon": "10/minute",  # Unauthenticated users: 10 requests per minute
-        "user": "1000/day",  # Authenticated users: 1000 requests per day
+        "book_anon": "5/min",  # Unauthenticated users: 10 requests per minute
+        "book_user": "5/min",  # Authenticated users: 1000 requests per day
     },
 }
 
